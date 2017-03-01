@@ -4,11 +4,18 @@ $(document).ready(function(){
   //Bind ajax calls to show more info
   $('body').on('click', '.more-info', function(event){
     event.preventDefault();
-    moreInfo = "";
-    var idx = $('.place-list').children().index($(this).closest("li"));
-    var placeId = places[idx]["place_id"];
+    moreInfo = {};
     var listItem = $(this).closest("li");
-    var moreInfo = service.getDetails({placeId: placeId}, getMoreInfo);
+    if ($(listItem).children().length === 1){
+
+    var idx = $('.place-list').children().index($(this).closest("li"));
+    var place = places[idx];
+    console.log(place);
+    var placeId = place["place_id"];
+    moreInfo.listItem = listItem;
+
+    service.getDetails({placeId: placeId}, getMoreInfo);
+    }
   })
 
 
@@ -16,7 +23,7 @@ $(document).ready(function(){
   $('#zip-form').on('submit', function(event){
     event.preventDefault();
     var zipCode = $(this).find(".zip-input").val();
-    var zipUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + zipCode + "&key=YOUR_API_KEY"
+    var zipUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + zipCode + "&"
     $.ajax({
       url: zipUrl,
       method: "get"
@@ -62,8 +69,16 @@ var placeMarkers = function(response){
 
 var getMoreInfo = function(place, status){
   console.log(status);
+  console.log(place);
   if(status === "OK"){
-    return place
+    moreInfo.address = place.formatted_address;
+    moreInfo.name = place.name;
+    moreInfo.website = place.website;
+    console.log(moreInfo);
+    $(moreInfo.listItem).append("<div></div>");
+    var div = $(moreInfo.listItem).find("div");
+    div.append("<p>" + moreInfo.address + "</p>");
+    div.append("<p><a href=" + moreInfo.website + ">Website</a></p>");
   }
 }
 
