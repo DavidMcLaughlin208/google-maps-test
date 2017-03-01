@@ -1,0 +1,99 @@
+/**{border: 1px solid red;}*/
+
+/* Always set the map height explicitly to define the size of the div
+ * element that contains the map. */
+#map {
+  margin-top: 50px;
+  height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.map-holder{
+  margin: 0 auto;
+  height: 50%;
+  width: 50%;
+}
+
+.find-zip{
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 50%;
+  height: 30px;
+  background-color:#e08714;
+  border-radius: 5px;
+  border:none;
+  display: block;
+  font-size: 20px;
+  font-family: helvetica;
+}
+.find-zip:hover{
+  background-color: orange;
+}
+
+.find-zip:focus{
+  outline: none;
+  background-color: #ad6100;
+}
+
+.zip-input{
+  font-size: 25px;
+  text-align: center;
+  width: 20%;
+  height: 30px;
+  margin: auto;
+  display: block;
+  margin-top: 30px;
+}
+
+.zip-input:focus{
+  outline: 1px solid orange;
+}
+
+.place-list{
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.place{
+  display: inline-block;
+  width: 29%;
+  text-align: center;
+  margin: 10px auto;
+  vertical-align: top;
+}
+
+.list-holder{
+  margin: 200px auto;
+  max-width: 700px;
+}
+
+.more-info{
+  margin-left: 1px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50px;
+  height:20px;
+  width: 20px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  color: black;
+}
+.more-info:focus{
+  outline: none;
+}
+
+.more-info:hover{
+  color: orange;
+}
+
+
+
+
+
+
