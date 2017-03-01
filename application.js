@@ -1,7 +1,8 @@
 var map;
 var moreInfo;
+var markers = [];
 $(document).ready(function(){
-  //Bind ajax calls to show more info
+  //Bind ajax calls to show more info button
   $('body').on('click', '.more-info', function(event){
     event.preventDefault();
     moreInfo = {};
@@ -10,20 +11,21 @@ $(document).ready(function(){
 
     var idx = $('.place-list').children().index($(this).closest("li"));
     var place = places[idx];
-    console.log(place);
     var placeId = place["place_id"];
     moreInfo.listItem = listItem;
 
+    //Request more info and create div displaying it
     service.getDetails({placeId: placeId}, getMoreInfo);
     }
   })
 
-
-
+  //Request initial information
+  //===========================================================================
   $('#zip-form').on('submit', function(event){
     event.preventDefault();
     var zipCode = $(this).find(".zip-input").val();
-    var zipUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + zipCode + "&"
+    var placeQuery = $(this).find("select").val();
+    var zipUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + zipCode + "&key="
     $.ajax({
       url: zipUrl,
       method: "get"
@@ -33,9 +35,14 @@ $(document).ready(function(){
       var request = {
         location: map.getCenter(),
         radius: '500',
-        query: 'park'
+        query: placeQuery
       }
       places = [];
+
+      for (i in markers){
+        markers[i].setMap(null);
+        markers[i] = null;
+      }
       markers = [];
       service = new google.maps.places.PlacesService(map);
       service.textSearch(request, placeMarkers);
@@ -43,8 +50,12 @@ $(document).ready(function(){
   })
 })
 
+//Helper methods
+//===================================================================
+
 var placeMarkers = function(response){
   // console.log(response[0]["geometry"]["location"]);
+  $(".place-list").empty();
   for(var i in response){
     var place = response[i];
     var marker = new google.maps.Marker({
@@ -68,17 +79,18 @@ var placeMarkers = function(response){
 }
 
 var getMoreInfo = function(place, status){
-  console.log(status);
-  console.log(place);
+  // console.log(status);
+  // console.log(place);
   if(status === "OK"){
     moreInfo.address = place.formatted_address;
     moreInfo.name = place.name;
     moreInfo.website = place.website;
     console.log(moreInfo);
-    $(moreInfo.listItem).append("<div></div>");
+    $(moreInfo.listItem).append("<div class='hidden'></div>");
     var div = $(moreInfo.listItem).find("div");
     div.append("<p>" + moreInfo.address + "</p>");
-    div.append("<p><a href=" + moreInfo.website + ">Website</a></p>");
+    div.append("<p><a href='" + moreInfo.website + "''>" + "Website" + "</a></p>");
+    div.slideDown();
   }
 }
 
